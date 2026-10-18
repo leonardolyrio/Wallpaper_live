@@ -10,7 +10,6 @@ imagemFundo.src = 'assets/wallpaper.jpg';
 const particulas = [];
 const quantidadeParticulas = 50; 
 
-// Um ciclo 'for' para criar várias partículas de uma vez
 for (let i = 0; i < quantidadeParticulas; i++) {
     particulas.push({
         x: Math.random() * canvas.width,              // Posição horizontal aleatória na tela
@@ -28,18 +27,22 @@ function animar() {
         ctx.drawImage(imagemFundo, 0, 0, canvas.width, canvas.height);
     }
 
-    particula.y -= particula.velocidadeY;
+    particulas.forEach(p => {
+        // 1. Atualiza a posição (faz subir)
+        p.y -= p.velocidadeY;
 
-    if (particula.y < 0) {
-        particula.y = canvas.height + 10;
-        particula.x = Math.random() * canvas.width;
-    }
+        // Se sair pelo topo, volta lá para baixo numa nova coluna horizontal aleatória
+        if (p.y < 0) {
+            p.y = canvas.height + 10;
+            p.x = Math.random() * canvas.width;
+        }
 
-    // Desenha a particula 
-    ctx.beginPath();
-    ctx.arc(particula.x, particula.y, particula.raio, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fill();
+        // 2. Desenha a partícula atual na tela
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.raio, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fill();
+    });
 
     // 4. Repete o loop
     requestAnimationFrame(animar);
